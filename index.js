@@ -6,6 +6,7 @@ const grantAccessContainer = document.querySelector(".grant-location-container")
 const searchForm = document.querySelector("[data-searchForm]");
 const loadingScreen = document.querySelector(".loading-container");
 const userInfoContainer = document.querySelector(".user-info-container");
+const errorHandle=document.querySelector(".error-handle")
 
 //initially vairables need????
 
@@ -16,14 +17,18 @@ getfromSessionStorage();
 
 
 
+
+
 userTab.addEventListener("click", () => {
     //pass clicked tab as input paramter
     switchTab(userTab);
+    errorHandle.classList.remove("active");
 });
 
 searchTab.addEventListener("click", () => {
     //pass clicked tab as input paramter
     switchTab(searchTab);
+    errorHandle.classList.remove("active");
 });
 
 function switchTab(clickedTab) {
@@ -70,7 +75,7 @@ function getLocation() {
         navigator.geolocation.getCurrentPosition(showPosition);
     }
     else {
-        //HW - show an alert for no gelolocation support available
+        alert("No gelolocation support available")
     }
 }
 
@@ -108,7 +113,7 @@ async function fetchUserWeatherInfo(coordinates) {
     }
     catch(err) {
         loadingScreen.classList.remove("active");
-        //HW
+        alert("Please Check your Internet Connection")
 
     }
 
@@ -148,6 +153,7 @@ function renderWeatherInfo(weatherInfo) {
 const searchInput = document.querySelector("[data-searchInput]");
 
 searchForm.addEventListener("submit", (e) => {
+    errorHandle.classList.remove("active");
     e.preventDefault();
     let cityName = searchInput.value;
 
@@ -167,11 +173,54 @@ async function fetchSearchWeatherInfo(city) {
             `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
           );
         const data = await response.json();
+       
         loadingScreen.classList.remove("active");
-        userInfoContainer.classList.add("active");
-        renderWeatherInfo(data);
+
+
+        
+
+        if(data.name){
+
+            renderWeatherInfo(data);
+            userInfoContainer.classList.add("active");
+            console.log("harsh")
+
+        }
+        else{
+            
+            const errImg=document.querySelector("[error-img]")
+            const errPara=document.querySelector("[error-para]")
+
+            console.log("harshjddjj")
+            errorHandle.classList.add("active");
+            errImg.src="./assets/error.jpg"
+            errPara.innerHTML=("Not Found")
+  
+
+        }
+        
+      
+        
+       
+     
+        
+
+
+        
+       
+        
+
+       
+
     }
     catch(err) {
+        alert("Please Check your Internet Connection")
+        
+       
+        
         //hW
+
+
+       
     }
 }

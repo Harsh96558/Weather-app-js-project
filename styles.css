@@ -96,6 +96,7 @@ h1 {
 }
 
 .loading-container{
+   
     display: none;
 }
 
@@ -103,8 +104,19 @@ h1 {
     display: flex;
 }
 
+
+
 .loading-container p{
     text-transform: uppercase;
+}
+
+.error-handle{
+   
+    display: none;
+}
+
+.error-handle.active{
+    display: flex;
 }
 
 .user-info-container{
